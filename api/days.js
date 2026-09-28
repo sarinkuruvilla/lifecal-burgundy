@@ -3,10 +3,10 @@ import { ImageResponse } from '@vercel/og';
 export const config = { runtime: 'edge' };
 
 const THEME = {
-  bg: '#150A0E',
+  bg: '#4A1E2A',
   past: '#E8C4CC',
   today: '#D9AD68',
-  future: 'rgba(232, 196, 204, 0.16)',
+  future: 'rgba(232, 196, 204, 0.2)',
   text: '#D9AD68',
   subtext: 'rgba(232, 196, 204, 0.55)',
 };
