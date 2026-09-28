@@ -1,0 +1,6 @@
+{
+  "name": "lifecal-burgundy",
+  "private": true,
+  "type": "module",
+  "dependencies": { "@vercel/og": "^0.6.2" }
+}
