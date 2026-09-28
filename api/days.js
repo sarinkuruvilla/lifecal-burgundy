@@ -2,6 +2,8 @@ import { ImageResponse } from '@vercel/og';
 
 export const config = { runtime: 'edge' };
 
+const font = fetch(new URL('../fonts/IBMPlexMono-Light.ttf', import.meta.url)).then((r) => r.arrayBuffer());
+
 const THEME = {
   bg: '#594142',
   past: '#E8C4CC',
@@ -27,7 +29,7 @@ export function calendar(tz, now = new Date()) {
   return { total, dayOfYear, left: total - dayOfYear, pct: Math.floor(dayOfYear / total * 100) };
 }
 
-export default function handler(req) {
+export default async function handler(req) {
   const { searchParams } = new URL(req.url);
   const width = dimension(searchParams.get('width'), 1290, 3000);
   const height = dimension(searchParams.get('height'), 2796, 4000);
@@ -52,18 +54,24 @@ export default function handler(req) {
       h({ width: dot, height: dot, borderRadius: dot, backgroundColor: color })
     ));
   }
-  const fs = width * 0.034;
+  const fs = width * 0.031;
+  const tracking = fs * 0.25;
   const tree = h(
     { width, height, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: THEME.bg },
     [
       h({ position: 'absolute', top, left: (width - gridW) / 2, width: gridW, height: gridH, display: 'flex', flexWrap: 'wrap' }, dots),
-      h({ position: 'absolute', top: top + gridH + cell * 1.4, width, display: 'flex', justifyContent: 'center', fontSize: fs, letterSpacing: fs * 0.04 }, [
-        h({ color: THEME.text }, `${left}d left`),
-        h({ color: THEME.subtext, marginLeft: fs * 0.6 }, `·  ${pct}%`),
+      h({ position: 'absolute', top: top + gridH + cell * 1.4, width, display: 'flex', justifyContent: 'center', fontFamily: 'IBM Plex Mono', fontWeight: 300, fontSize: fs, letterSpacing: tracking, paddingLeft: tracking }, [
+        h({ color: THEME.text }, `${left}D LEFT`),
+        h({ color: THEME.subtext, marginLeft: fs * 0.9 }, '·'),
+        h({ color: THEME.subtext, marginLeft: fs * 0.9 }, `${pct}%`),
       ]),
     ]
   );
-  const response = new ImageResponse(tree, { width, height });
+  const response = new ImageResponse(tree, {
+    width,
+    height,
+    fonts: [{ name: 'IBM Plex Mono', data: await font, weight: 300, style: 'normal' }],
+  });
   response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600');
   return response;
 }

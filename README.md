@@ -36,6 +36,8 @@ On iOS, create a Shortcuts automation that runs once a day. It should do a **Get
 
 Colors are set in the `THEME` object at the top of [`api/days.js`](api/days.js).
 
+The footer uses [IBM Plex Mono](https://github.com/IBM/plex) Light, bundled in `fonts/` under the SIL Open Font License (`fonts/OFL.txt`).
+
 ## Development
 
 ```sh
